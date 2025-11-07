@@ -1,6 +1,6 @@
 {
   "name": "performance",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "mcpServers": {
     "performance": {
       "command": "npx",
