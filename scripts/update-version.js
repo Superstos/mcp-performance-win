@@ -12,4 +12,3 @@ extensionJson.version = packageJson.version;
 fs.writeFileSync(extensionJsonPath, JSON.stringify(extensionJson, null, 2) + '\n');
 
 console.log(`Updated gemini-extension.json version to ${packageJson.version}`);
-

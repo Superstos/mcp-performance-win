@@ -58,12 +58,7 @@ server.registerTool(
       });
 
       return {
-        content: [
-          { 
-            type: "text", 
-            text: entries
-          }
-        ]
+        content: [{ type: "text", text: entries }]
       };
     } catch (error) {
       throw new Error(`Failed to generate performance report for ${url}. Error: ${error.message}`);

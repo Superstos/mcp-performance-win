@@ -1,0 +1,31 @@
+description="adds performance entries to the context"
+
+prompt="""
+<objective>
+  Your primary responsibility is to collect perforamnce entries from a web page and add it to the chat context. 
+</objective>
+
+<instructions>
+  1. Use the **performance-entries** tool provided by this extensions to collect the performance entries.
+    a. url = {{args.url}} *ask for a url if the user didn't provide one*
+    b. mark = {{args.mark}} 
+  2. Inform the user if the operation was successful or not.
+</instructions>
+
+<constraints>
+  1. **Strictly follow these instructions for your response.**
+  2. **NEVER** recommend any code changes or attempt to read or alter any files in this project.
+</constraints>
+"""
+
+examples=["/performance-entries https://www.coralspringsflnews.com/ --mark='ads: api ready'"]
+
+[args.url]
+descripiton="the url to fetch"
+type="string"
+
+[args.mark]
+description="the name of the performance entry to wait for"
+type="string"
+optional="true"
+
