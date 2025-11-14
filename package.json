@@ -1,6 +1,6 @@
 {
   "name": "mcp-performance",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "A Gemini CLI extension to analyze web page performance",
   "homepage": "https://github.com/mcclatchy/mcp-performance#readme",
   "bugs": {
