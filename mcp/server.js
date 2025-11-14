@@ -29,18 +29,15 @@ server.registerTool(
     // Start the browser
     const browser = await puppeteer.launch({ 
       headless: false, 
+      args: [`--window-size=1400,900`],
+      defaultViewport: null,
       executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' 
     });
-    const page = await browser.newPage();
-    const timeout = 10000;
 
     try {
-      // Set the viewport dimensions
-      await page.setViewport({
-        width: 1280,
-        height: 720,
-        deviceScaleFactor: 1 // Optional: defaults to 1
-      });
+      // Use the initial page
+      const [page] = await browser.pages();
+      const timeout = 10000;
 
       // Navigate to the URL using 'domcontentloaded'
       await page.goto(url, { waitUntil: 'networkidle2' }); 
