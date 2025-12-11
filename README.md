@@ -1,12 +1,12 @@
-# mcp-performance
-A Gemini CLI extension and MCP server to analyze web page performance
+# mcp-performance-win
+A Gemini CLI extension and MCP server to analyze web page performance. This is a fork of [mcclatchy/mcp-performance](https://github.com/mcclatchy/mcp-performance) optimized for Windows.
 
 ## Gemini CLI Extension
 
 This project is intended to be installed as a Gemini CLI extension. This will include both the MCP server and commands for consistent AI responses. To install it, use the following command:
 
 ```bash
-gemini extensions install https://github.com/mcclatchy/mcp-performance
+gemini extensions install https://github.com/Superstos/mcp-performance-win
 ```
 
 After installing, you will have access to a performance MCP server as well as commands that we have created to assist you. Commands begin with the `/` character, such as `/performance-analysis`, and will be visible in the client. These commands will automatically pull performance data using the MCP server. If you would like to pull performance data for a different conversation, you can initiate the MCP tool directly in a prompt. This direct invocation pattern works consistently but is not strictly necessary when using the Gemini CLI commands:
@@ -20,7 +20,7 @@ After installing, you will have access to a performance MCP server as well as co
 This project can also be run as a standalone MCP server. This is useful for developers who want to use this tool with other MCP clients, such as [mcp-inspector](https://modelcontextprotocol.to/docs/tools/inspector), or other LLM clients like Claude. To run the server for these clients, use the following command:
 
 ```
-npx github:mcclatchy/mcp-performance
+npx github:Superstos/mcp-performance-win
 ```
 
 For local development and testing with the Gemini CLI, please refer to the "Local Development" section and use `npm start`.

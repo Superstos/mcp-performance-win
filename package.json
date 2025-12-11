@@ -1,14 +1,14 @@
 {
-  "name": "mcp-performance",
-  "version": "1.5.1",
+  "name": "mcp-performance-win",
+  "version": "1.5.2",
   "description": "A Gemini CLI extension to analyze web page performance",
-  "homepage": "https://github.com/mcclatchy/mcp-performance#readme",
+  "homepage": "https://github.com/Superstos/mcp-performance-win#readme",
   "bugs": {
-    "url": "https://github.com/mcclatchy/mcp-performance/issues"
+    "url": "https://github.com/Superstos/mcp-performance-win/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mcclatchy/mcp-performance.git"
+    "url": "git+https://github.com/Superstos/mcp-performance-win.git"
   },
   "license": "MIT",
   "author": "McClatchy",

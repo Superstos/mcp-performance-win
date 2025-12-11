@@ -1,11 +1,63 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import puppeteer from "puppeteer-core";
 import { z } from "zod";
+import fs from "fs";
+import path from "path";
+
+// Function to find the Chrome executable path
+function getChromeExecutablePath() {
+  // Prioritize PUPPETEER_EXECUTABLE_PATH environment variable
+  if (process.env.PUPPETEER_EXECUTABLE_PATH) {
+    console.log(`Using Chrome executable path from environment variable: ${process.env.PUPPETEER_EXECUTABLE_PATH}`);
+    return process.env.PUPPETEER_EXECUTABLE_PATH;
+  }
+
+  let executablePath;
+
+  switch (process.platform) {
+    case 'win32':
+      const windowsPaths = [
+        path.join(process.env.PROGRAMFILES, 'Google', 'Chrome', 'Application', 'chrome.exe'),
+        path.join(process.env['PROGRAMFILES(X86)'], 'Google', 'Chrome', 'Application', 'chrome.exe'),
+        path.join(process.env.LOCALAPPDATA, 'Google', 'Chrome', 'Application', 'chrome.exe'),
+        path.join(process.env.PROGRAMFILES, 'Microsoft', 'Edge', 'Application', 'msedge.exe'), // Microsoft Edge (Chromium)
+        path.join(process.env['PROGRAMFILES(X86)'], 'Microsoft', 'Edge', 'Application', 'msedge.exe') // Microsoft Edge (Chromium)
+      ];
+      executablePath = windowsPaths.find(p => fs.existsSync(p));
+      break;
+    case 'darwin':
+      const macPaths = [
+        '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+        '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge', // Microsoft Edge (Chromium)
+      ];
+      executablePath = macPaths.find(p => fs.existsSync(p));
+      break;
+    case 'linux':
+      const linuxPaths = [
+        '/usr/bin/google-chrome',
+        '/usr/bin/google-chrome-stable',
+        '/usr/bin/chromium',
+        '/usr/bin/chromium-browser',
+        '/snap/bin/chromium',
+        '/opt/google/chrome/chrome'
+      ];
+      executablePath = linuxPaths.find(p => fs.existsSync(p));
+      break;
+    default:
+      throw new Error(`Unsupported platform: ${process.platform}`);
+  }
+
+  if (!executablePath) {
+    throw new Error(`Chrome/Chromium executable not found for platform: ${process.platform}. Please ensure Chrome/Chromium is installed or set the PUPPETEER_EXECUTABLE_PATH environment variable.`);
+  }
+  console.log(`Discovered Chrome executable path: ${executablePath}`);
+  return executablePath;
+}
 
 // Establish the MCP server
 const server = new McpServer({
   name: "performance",
-  version: "1.0.0"
+  version: "1.0.1"
 });
 
 /**
@@ -21,17 +73,20 @@ server.registerTool(
     title: "Analyze Web Page Performance",
     description: "Loads a URL in a headless browser and returns a detailed timeline of performance metrics as a JSON array of PerformanceEntry objects. Useful for diagnosing performance bottlenecks and measuring key events like First Contentful Paint (FCP). Optionally, it can wait for a specific `performance.mark` to measure custom events.",
     inputSchema: {
-      url: z.string().url("Must be a valid URL"),
+      url: z.string().url("Must be a valid URL").refine((val) => val.startsWith("http://") || val.startsWith("https://"), {
+        message: "URL must start with http:// or https://"
+      }),
       mark: z.string().optional()
     }
   },
   async ({ url, mark }) => {
+    const executablePath = getChromeExecutablePath();
     // Start the browser
     const browser = await puppeteer.launch({ 
-      headless: false, 
+      headless: "new", 
       args: [`--window-size=1400,900`],
       defaultViewport: null,
-      executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' 
+      executablePath: executablePath
     });
 
     try {
@@ -40,7 +95,7 @@ server.registerTool(
       const timeout = 10000;
 
       // Navigate to the URL using 'domcontentloaded'
-      await page.goto(url, { waitUntil: 'networkidle2' }); 
+      await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 }); 
       
       // Wait for performance mark if defined
       if(mark) {

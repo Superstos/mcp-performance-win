@@ -1,11 +1,11 @@
 {
-  "name": "performance",
-  "version": "1.5.1",
+  "name": "mcp-performance-win",
+  "version": "1.5.2",
   "mcpServers": {
-    "performance": {
+    "mcp-performance-win": {
       "command": "npx",
       "args": [
-        "github:mcclatchy/mcp-performance"
+        "github:Superstos/mcp-performance-win"
       ]
     }
   },
