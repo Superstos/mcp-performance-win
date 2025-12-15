@@ -1,8 +1,13 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import puppeteer from "puppeteer-core";
+import puppeteerCore from "puppeteer-core";
+import { addExtra } from "puppeteer-extra";
+import StealthPlugin from "puppeteer-extra-plugin-stealth";
 import { z } from "zod";
 import fs from "fs";
 import path from "path";
+
+const puppeteer = addExtra(puppeteerCore);
+puppeteer.use(StealthPlugin());
 
 // Function to find the Chrome executable path
 function getChromeExecutablePath() {
@@ -83,7 +88,7 @@ server.registerTool(
     const executablePath = getChromeExecutablePath();
     // Start the browser
     const browser = await puppeteer.launch({ 
-      headless: "new", 
+      headless: false, 
       args: [`--window-size=1400,900`],
       defaultViewport: null,
       executablePath: executablePath
@@ -92,6 +97,8 @@ server.registerTool(
     try {
       // Use the initial page
       const [page] = await browser.pages();
+      // Set a common User Agent to help bypass bot detection
+      await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
       const timeout = 10000;
 
       // Navigate to the URL using 'domcontentloaded'
