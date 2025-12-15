@@ -1,6 +1,6 @@
 {
   "name": "mcp-performance-win",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "A Gemini CLI extension to analyze web page performance",
   "homepage": "https://github.com/Superstos/mcp-performance-win#readme",
   "bugs": {
